@@ -2,11 +2,15 @@
 """
 Created on Mon Feb 28 13:47:36 2022
 
+File to get crop data from india gov. api and write to a json file 
+
 @author: pmcen
 """
 import requests
 import json
 import csv
+import pandas as pd 
+import sqlite3 
 
 # India crops api 
 api_key = "579b464db66ec23bdd0000010b46e55247d744b7680bb732c208ced6"
@@ -26,10 +30,9 @@ with open('crop_records.csv', 'w', encoding='UTF8', newline='') as f:
     for i in range(0,246091):
         rows.append(crop_records[i].values())
     writer.writerows(rows)
-
-
-
-
+# write full json import (not just records as above) to json file
+with open('crop_records.json', 'w', encoding='utf-8') as f:
+    json.dump(result, f, ensure_ascii=False, indent=4)
 
 
 
