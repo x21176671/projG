@@ -13,8 +13,9 @@ import pymongo
 with open('C:/Users/pmcen/OneDrive/Documents/college/nci/semester1/database_and_analytics_programming/project/crop_records.JSON') as f:
   data = json.load(f)
 recs = data["records"]
-
-crops2015 = []  
+with open('crop_record_no_desc.json', 'w', encoding='utf-8') as f:
+    json.dump(recs, f, ensure_ascii=False, indent=4)  # create json that only contains records, no info about file source/describtion etc 
+crops2015 = []  #empty lists to store each years records 
 crops2014 = []  
 crops2013 = []  
 crops2012 = []  
@@ -24,7 +25,7 @@ crops2009 = []
 crops2008 = []  
 crops2007 = []  
 
-for i in range(len(recs)):
+for i in range(len(recs)): # fill each year with appropriate dicts 
     if recs[i]["crop_year"] == 2015:
         crops2015.append(recs[i])
     if recs[i]["crop_year"] == 2014:
@@ -44,7 +45,7 @@ for i in range(len(recs)):
     if recs[i]["crop_year"] == 2007:
         crops2007.append(recs[i])
 
-with open('crop_record2015.json', 'w', encoding='utf-8') as f:
+with open('crop_record2015.json', 'w', encoding='utf-8') as f: #save individual jsons
     json.dump(crops2015, f, ensure_ascii=False, indent=4)
 with open('crop_record2014.json', 'w', encoding='utf-8') as f:
     json.dump(crops2014, f, ensure_ascii=False, indent=4)
