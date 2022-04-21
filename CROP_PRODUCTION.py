@@ -325,7 +325,7 @@ for n in crop_anlys_names:
         plt.xlabel("year")
         plt.ylabel("yield")
         print(n, "\n", years, "\n yield: \n", c_yield)
-        plt.plot(years, c_yield, label = n)
+        plt.plot(years, c_yield, '-o', label = n)
         plt.legend(loc = 10, ncol=1, bbox_to_anchor=(1.25, 0.5))
     except ZeroDivisionError: # catch mistakes in loop and poor input data 
         print(n, "has no area this year ", print(i))
@@ -349,7 +349,7 @@ for n in crop_anlys_names:
         plt.xlabel("year")
         plt.ylabel("yield")
         print(n, "\n", years, "\n yield: \n", c_yield)
-        plt.plot(years, c_yield, label = n)
+        plt.plot(years, c_yield, '-o', label = n)
         plt.legend(loc = 10, ncol=1, bbox_to_anchor=(1.25, 0.5))
     except ZeroDivisionError: # catch mistakes in loop and poor input data 
         print(n, "has no area this year ", print(i))
@@ -379,7 +379,7 @@ for n in crop_anlys_names:
         plt.xlabel("year")
         plt.ylabel("yield")
         print(n, "\n", years, "\n yield: \n", c_yield)
-        plt.plot(years, c_yield, label = n)
+        plt.plot(years, c_yield, '-o', label = n)
         plt.legend(loc = 10, ncol=1, bbox_to_anchor=(1.25, 0.5))
     except ZeroDivisionError: # catch mistakes in loop and poor input data 
         print(n, "has no area this year ", print(i))
