@@ -101,7 +101,20 @@ crop_anlys_names = list(df_time.crop.unique()) # redefine the names of crops to 
 # YIELD ANALYSIS
 exclude_yield = []
 # loop for yield analysis
-for n in crop_anlys_names:
+c_yield_2014 = []  # list for the crop yields from 2014 ( for sorting legend nicely)
+for i in crop_anlys_names: # loop to find the 2014 yield for each crop being analysed below 
+    c_df = df_time[df_time.crop == i]
+    c_yield_2014.append(sum(c_df[c_df.crop_year==2014].production)/sum(c_df[c_df.crop_year==2014].area))
+yield_dict2014 = dict(zip(crop_anlys_names, c_yield_2014)) # dictionary of crops being analysed and their yield in 2014 (end of yield analysis)
+import operator
+yield_dict2014 = dict( sorted(yield_dict2014.items(), key=operator.itemgetter(1),reverse=True)) #sort the dictionary by value
+yield_dict2014_upper = yield_dict2014.copy()  # copy the dictionary to subset it for the plots of only the crops in the upper level plot for the report
+low_yield_crops = ["Turmeric", "Black pepper", "Cotton(lint)", "Dry chillies", "Peas & beans (Pulses)",
+                   "Gram", "Arhar/Tur", "Tobacco", "Masoor",
+                   "Linseed", "Sesamum", "Moong(Green Gram)", "Castor seed"]  
+for key in low_yield_crops:  # remove low yield crops 
+    del yield_dict2014_upper[key] 
+for n in yield_dict2014_upper.keys():
     c_yield =[]
     c_df = df_time[df_time.crop == n]
     years =  list(c_df.crop_year.unique()) # get years for given crop 
@@ -111,51 +124,25 @@ for n in crop_anlys_names:
             total_area = sum(c_df[c_df.crop_year==i].area)
             c_yield.append(total_prod/total_area)
         plt.xlabel("year")
-        plt.ylabel("yield")
+        plt.ylabel("yield (Tonnes/Hectare)")
         print(n, "\n", years, "\n yield: \n", c_yield)
         plt.plot(years, c_yield,'-o', label = n)
         plt.legend(loc = 10, ncol=1, bbox_to_anchor=(1.25, 0.5))
     except ZeroDivisionError: # catch mistakes in loop and poor input data 
         print(n, "has no area this year ", print(i))
         exclude_yield.append(i)
-plt.title("Yield by crop")
-plt.ylim(0.5, 40.0)
+plt.title("Yield by crop (high) yield)" )
 plt.show()
-# YIELD ANALYSIS w/o sugarcane
-exclude_yield = []
-crop_anlys_names.remove("Sugarcane")  # remove outlier 
-# loop for yield analysis
-for n in crop_anlys_names:
-    c_yield =[]
-    c_df = df_time[df_time.crop == n]
-    years =  list(c_df.crop_year.unique()) # get years for given crop 
-    try:
-        for i in years:
-            total_prod = sum(c_df[c_df.crop_year==i].production)
-            total_area = sum(c_df[c_df.crop_year==i].area)
-            c_yield.append(total_prod/total_area)
-        plt.xlabel("year")
-        plt.ylabel("yield")
-        print(n, "\n", years, "\n yield: \n", c_yield)
-        plt.plot(years, c_yield,'-o', label = n)
-        plt.legend(loc = 10, ncol=1, bbox_to_anchor=(1.25, 0.5))
-    except ZeroDivisionError: # catch mistakes in loop and poor input data 
-        print(n, "has no area this year ", print(i))
-        exclude_yield.append(i)
-plt.title("Yield by crop")
-plt.ylim(0.5, 17.5)
-plt.show()
+
 # YIELD ANALYSIS low yield crops 
 exclude_yield = []
-crop_anlys_names.remove("Banana") 
-crop_anlys_names.remove("Jute") 
-crop_anlys_names.remove("Tapioca") 
-crop_anlys_names.remove("Potato") 
-crop_anlys_names.remove("Sweet potato") 
-crop_anlys_names.remove("Onion") 
-crop_anlys_names.remove("Mesta")  # remove mid yield crops 
+yield_dict2014_lower = yield_dict2014.copy() # copy the dictionary to subset it for the plots of only the crops in the lower level plot for the report
+high_yield_crops = ["Sugarcane", "Banana", "Jute", "Tapioca", "Potato",
+                   "Mesta", "Sweet potato", "Onion"]  
+for key in high_yield_crops:  # remove low yield crops 
+    del yield_dict2014_lower[key] 
 # loop for yield analysis
-for n in crop_anlys_names:
+for n in yield_dict2014_lower.keys():
     c_yield =[]
     c_df = df_time[df_time.crop == n]
     years =  list(c_df.crop_year.unique()) # get years for given crop 
@@ -165,15 +152,14 @@ for n in crop_anlys_names:
             total_area = sum(c_df[c_df.crop_year==i].area)
             c_yield.append(total_prod/total_area)
         plt.xlabel("year")
-        plt.ylabel("yield")
+        plt.ylabel("yield (Tonnes/Hectare)")
         print(n, "\n", years, "\n yield: \n", c_yield)
         plt.plot(years, c_yield, '-o', label = n)
         plt.legend(loc = 10, ncol=1, bbox_to_anchor=(1.25, 0.5))
     except ZeroDivisionError: # catch mistakes in loop and poor input data 
         print(n, "has no area this year ", print(i))
         exclude_yield.append(i)
-plt.title("Yield by crop")
-plt.ylim(0.35, 1.9)
+plt.title("Yield by crop (low yield)")
 plt.show()
 
 
@@ -201,12 +187,11 @@ ax.set_xlabel('number of unique crops')
 ax.set_title('Crop Diversification')
 
 # Label with given captions, custom padding and annotate options
-ax.bar_label(hbars, labels=[r for r in records_kept],
+ax.bar_label(hbars, labels=[f'Records: {r}' for r in records_kept],
              padding=8,  fontsize=14)
-ax.set_xlim(right=75)
+ax.set_xlim(right=83)
 
 plt.show()
- 
 
 
 
