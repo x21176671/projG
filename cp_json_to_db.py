@@ -44,4 +44,3 @@ df.to_sql("crop_records", conn) # dump df, created from json file, into sql db
 
 
 
-

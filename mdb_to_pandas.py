@@ -7,11 +7,8 @@ COMPUTATIONALLY INTENSIVE SCRIPT ~ 2 HOURS TO RUN FOR LOOP
 @author: pmcen
 """
 
-import pymongo
 import pandas as pd
 from pymongo import MongoClient
-import seaborn as sns
-import matplotlib.pyplot as plt
 import numpy as np
 
 client = MongoClient()
@@ -80,13 +77,6 @@ for i in range(0, len(NAs)):
                         print("average: ", avg)
                         print(n, " out of ", len(df), "df w/o NAs")
                         NAs.production[i] = avg # replace na with average 
-                        if df.crop_year[n] <= year:  # find non na with same or less year as na found 
-                            replacers_cc.append(float(df.production[n]))  # add production value to list to average over 
-                            avg_cc = round(np.average(replacers_cc), 2)  # average over all similar values found 
-                            print("Climate change: \n", i, "out of " , len(NAs), " NAs")
-                            print("average: ", avg_cc)
-                            print(n, " out of ", len(df), "df w/o NAs")
-                            NAs.production_cc[i] = avg_cc # replace na with average 
 
 print("NAs before cleaning", countNA)
 print("NAs after cleaning full avg", len(NAs[NAs.production=="NA"]))
